@@ -1,0 +1,5 @@
+package Proyecto
+
+object Optimización {
+
+}
