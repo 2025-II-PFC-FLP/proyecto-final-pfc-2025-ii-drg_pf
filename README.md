@@ -1,22 +1,22 @@
 [![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/h71fa0_C)
-# Asignación: [Nombre de la asignación]
+# Asignación: Proyecto Final 
 
-**Fecha:** [DD/MM/AAAA]
-**Curso:** [Nombre del Curso]
+**Fecha:** 08/12/2025
+**Curso:** Fundamentos de Programación Funcional y Concurrente
 
 ---
 
 ## 👥 Integrantes del Grupo
 
-| Nombre Completo | Código | Rol            | Correo Electrónico        |
-| --------------- | ------ | -------------- | ------------------------- |
-| [Estudiante 1]  | 123456 | [Líder/Colab.] | [correo1@institucion.edu] |
-| [Estudiante 2]  | 123457 | [Colaborador]  | [correo2@institucion.edu] |
-| [Estudiante 3]  | 123458 | [Colaborador]  | [correo3@institucion.edu] |
+| Nombre Completo            | Código    | Rol   | Correo Electrónico                  |
+|----------------------------|-----------| ----- |-------------------------------------|
+| Camilo Andrés López Trejos | 202459691 | Líder | camilo.trejos@correounivalle.edu.co |
+| [Estudiante 2]             | 123457    | [Colaborador] | [correo2@institucion.edu]           |
+| [Estudiante 3]             | 123458    | [Colaborador] | [correo3@institucion.edu]           |
 
 ---
 
 ## 📌 Descripción de la Asignación
-
-[Breve párrafo explicando el propósito y objetivos del taller (4-6 líneas). Ejemplo:]
-_"Este taller busca analizar [tema principal] mediante [metodología]. Los objetivos incluyen [objetivo 1], [objetivo 2] y [objetivo 3], aplicando conceptos vistos en clase como [concepto relevante]."_
+<p align="justify">
+Este proyecto final busca aplicar los fundamentos de programación funcional y concurrente en Scala para resolver el problema del riego óptimo en cultivos de caña del Valle del Cauca. Los objetivos incluyen implementar soluciones funcionales puras utilizando recursión, funciones de alto orden y estructuras de datos inmutables; paralelizar algoritmos mediante técnicas de paralelismo de tareas y datos para acelerar tiempos de ejecución; y realizar análisis comparativos de desempeño entre versiones secuenciales y paralelas. El proyecto integra conceptos clave como programación funcional, optimización combinatoria, y evaluación de eficiencia mediante la Ley de Amdahl, culminando con la entrega de código funcional, casos de prueba automatizados y un informe técnico detallado.
+</p>
