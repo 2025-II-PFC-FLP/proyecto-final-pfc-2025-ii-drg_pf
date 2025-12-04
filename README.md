@@ -12,7 +12,7 @@
 |----------------------------|-----------| --------------|-------------------------------------|
 | Camilo Andrés López Trejos | 202459691 | Líder         | camilo.trejos@correounivalle.edu.co |
 | David Santiago peña Cotamo | 202459611 | Colaborador   | pena.david@correounivalle.edu.co    |
-| [Estudiante 3]             | 123458    | [Colaborador] | [correo3@institucion.edu]           |
+| Nicolás González Bolaños   | 20245970  | Colaborador   | nicolas.gonzalez.bolanos@correounivalle.edu.co|
 
 ---
 
