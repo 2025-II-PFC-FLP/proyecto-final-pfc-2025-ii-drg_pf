@@ -21,6 +21,10 @@ object Generadores {
   }
 
   /**
+   * Esta funcion se usa en el benchmark para generar
+   *fincas de grandes tamaños de forma escalable
+   */
+  /**
    * Genera un tablón aleatorio con rangos fijos
    * ts: 5-20 días, tr: 1-5 días, p: 1-4
    * @return Tablón con valores en rangos realistas
@@ -32,6 +36,9 @@ object Generadores {
       Random.between(1, 5))    // p entre 1 y 4
   }
 
+  /**
+   * Esta funcion se usa para generar fincas pequeñas con rangos fijos
+   */
   /**
    * Genera una finca con n tablones usando rangos fijos
    * @param n Cantidad de tablones
