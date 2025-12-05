@@ -12,4 +12,22 @@ object Optimizacion {
   def todasLasProgramaciones(n: Int): Vector[ProRiego] = {
     (0 until n).toVector.permutations.map(_.toVector).toVector // Permutaciones del dominio 0..n-1 convertidas a Vector
   }
+
+  /**
+   * Calcula la programación óptima de una finca.
+   * Revisa todas las programaciones posibles.
+   *
+   * @param f finca
+   * @param d matriz de distancias
+   * @return (mejor programación, costo mínimo)
+   */
+  def programacionOptima(f: Finca, d: Distancia): (ProRiego, Int) = {
+    val n = f.length
+
+    // Generar todas las posibles programaciones de riego
+    val todas = todasLasProgramaciones(n)
+
+    // Usar la función de Programaciones para elegir la mejor
+    Programaciones.mejorProgramacion(f, d, todas)
+  }
 }
