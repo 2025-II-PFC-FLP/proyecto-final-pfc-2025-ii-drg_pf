@@ -87,5 +87,6 @@ test {
         exceptionFormat "full"
         showStandardStreams = true
     }
+    // outputs.upToDateWhen { false } //Siempre corre los tests aunque no haya cambios. Usada en pruebas
 }
 
