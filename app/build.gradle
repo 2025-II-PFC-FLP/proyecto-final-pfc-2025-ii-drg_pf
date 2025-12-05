@@ -72,6 +72,8 @@ application {
 }
 
 test {
+    useJUnitPlatform()
+
     useJUnitPlatform {
         includeEngines 'scalatest'
     }
