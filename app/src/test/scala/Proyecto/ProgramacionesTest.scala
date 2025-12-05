@@ -35,4 +35,23 @@ class ProgramacionesTest extends AnyFunSuite with Matchers {
     // Verificamos que no haya duplicados.
     programaciones.toSet.size shouldBe 6
   }
+
+  // 2. PRUEBA DE VALIDACIÓN DE PROGRAMACIONES
+  test("esProgramacionValida debe aceptar permutaciones correctas") {
+
+    // Esta es una permutación válida de {0,1,2}
+    val pi = Vector(2, 0, 1)
+
+    // La función debe devolver true
+    Programaciones.esProgramacionValida(pi, 3) shouldBe true
+  }
+
+  test("esProgramacionValida debe rechazar permutaciones incorrectas") {
+
+    // Esta NO es válida porque el 2 se repite y falta el 0
+    val pi = Vector(2, 2, 1)
+
+    // La función debe detectarlo y devolver false
+    Programaciones.esProgramacionValida(pi, 3) shouldBe false
+  }
 }
