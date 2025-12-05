@@ -30,4 +30,19 @@ object Optimizacion {
     // Usar la función de Programaciones para elegir la mejor
     Programaciones.mejorProgramacion(f, d, todas)
   }
+
+
+  /**
+   * Devuelve solo el costo óptimo de la finca.
+   * Trae programacionOptima pero solo entrega el costo.
+   *
+   * @param f finca
+   * @param d matriz de distancias
+   * @return costo mínimo
+   */
+  def costoOptimo(f: Finca, d: Distancia): Int = {
+    val (_, costo) = programacionOptima(f, d)
+    //Ejemplo: val (_, costo) = (Vector(0,2,1), 45), El _ ignora el primer valor y costo toma el valor 45
+    costo
+  }
 }
