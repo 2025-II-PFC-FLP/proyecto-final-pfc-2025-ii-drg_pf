@@ -1,5 +1,7 @@
 package Proyecto
 
+import common._
+
 object Programaciones {
 
   /**
@@ -39,20 +41,55 @@ object Programaciones {
    */
   def mejorProgramacion(f: Finca, d: Distancia, lista: Vector[ProRiego]): (ProRiego, Int) = {
     // Evalúa cada programación y toma la de menor costo total
-    lista.map(pi => (pi, costoTotal(f, pi, d))).minBy(_._2) // Devuelve la tupla (programación, costo) tomando el segundo elemento.
+    lista.map(pi => (pi, costoTotal(f, pi, d))).minBy(_._2)
   }
 
   /**
    * Genera todas las posibles programaciones de riego de la finca f.
    * Cada programación es una permutación de los índices 0..n-1.
    *
+   * VERSIÓN SECUENCIAL
+   *
    * @param f finca
    * @return Vector con todas las permutaciones posibles
    */
   def generarProgramacionesRiego(f: Finca): Vector[ProRiego] = {
     val n = f.length
+    // Genera todas las permutaciones del vector 0..n-1
+    (0 until n).toVector.permutations.map(_.toVector).toVector
+  }
 
-    (0 until n).toVector.permutations.map(_.toVector).toVector // Genera todas las permutaciones del vector 0..n-1
+  /**
+   * Genera todas las posibles programaciones de riego de la finca f.
+   * Cada programación es una permutación de los índices 0..n-1.
+   *
+   * VERSIÓN PARALELA - Utiliza paralelización de tareas con common.parallel
+   *
+   * @param f finca
+   * @return Vector con todas las permutaciones posibles
+   */
+  def generarProgramacionesRiegoPar(f: Finca): Vector[ProRiego] = {
+    val n = f.length
+    val indices = (0 until n).toVector
+
+    // Genera todas las permutaciones y las convierte a Vector
+    val todasPermutaciones = indices.permutations.toVector
+
+    // Si hay suficientes permutaciones, las procesa en paralelo
+    if (todasPermutaciones.length > 1000) {
+      // Divide el trabajo en dos mitades y las procesa en paralelo usando common.parallel
+      val mitad = todasPermutaciones.length / 2
+      val (izq, der) = parallel(
+        todasPermutaciones.take(mitad).map(_.toVector),
+        todasPermutaciones.drop(mitad).map(_.toVector)
+      )
+      // Combina los resultados de ambas tareas paralelas
+      izq ++ der
+    } else {
+      // Para casos pequeños, la versión secuencial es más eficiente
+      // debido a la sobrecarga (overhead) de crear tareas paralelas
+      todasPermutaciones.map(_.toVector)
+    }
   }
 
 }
