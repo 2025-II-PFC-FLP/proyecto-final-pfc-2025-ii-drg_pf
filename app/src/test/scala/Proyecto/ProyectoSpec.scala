@@ -1,5 +1,0 @@
-package Proyecto
-
-class ProyectoSpec {
-
-}
