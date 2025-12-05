@@ -28,4 +28,31 @@ object Programaciones {
     // Suma costo de riego y costo de movilidad
     Costos.costoRiegoFinca(f, pi) + Costos.costoMovilidad(f, pi, d)
   }
+
+  /**
+   * Encuentra la mejor (mínima) programación dentro de una lista dada.
+   *
+   * @param f finca
+   * @param d matriz de distancias
+   * @param lista lista de programaciones candidatas
+   * @return tupla (programación, costo)
+   */
+  def mejorProgramacion(f: Finca, d: Distancia, lista: Vector[ProRiego]): (ProRiego, Int) = {
+    // Evalúa cada programación y toma la de menor costo total
+    lista.map(pi => (pi, costoTotal(f, pi, d))).minBy(_._2) // Devuelve la tupla (programación, costo) tomando el segundo elemento.
+  }
+
+  /**
+   * Genera todas las posibles programaciones de riego de la finca f.
+   * Cada programación es una permutación de los índices 0..n-1.
+   *
+   * @param f finca
+   * @return Vector con todas las permutaciones posibles
+   */
+  def generarProgramacionesRiego(f: Finca): Vector[ProRiego] = {
+    val n = f.length
+
+    (0 until n).toVector.permutations.map(_.toVector).toVector // Genera todas las permutaciones del vector 0..n-1
+  }
+
 }
