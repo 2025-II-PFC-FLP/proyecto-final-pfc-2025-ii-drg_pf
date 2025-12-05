@@ -22,4 +22,17 @@ class ProgramacionesTest extends AnyFunSuite with Matchers {
     Vector(2, 0, 3),
     Vector(4, 3, 0)
   )
+
+  // 1. PRUEBA DE GENERACIÓN DE PROGRAMACIONES
+  test("generarProgramacionesRiego debe generar todas las permutaciones") {
+
+    // Llamamos a la función que genera todas las permutaciones posibles.
+    val programaciones = Programaciones.generarProgramacionesRiego(f)
+
+    // Para 3 tablones deben existir 3! = 6 permutaciones posibles.
+    programaciones.length shouldBe 6
+
+    // Verificamos que no haya duplicados.
+    programaciones.toSet.size shouldBe 6
+  }
 }
