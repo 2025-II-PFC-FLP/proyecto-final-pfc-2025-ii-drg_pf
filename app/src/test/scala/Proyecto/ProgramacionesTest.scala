@@ -54,4 +54,17 @@ class ProgramacionesTest extends AnyFunSuite with Matchers {
     // La función debe detectarlo y devolver false
     Programaciones.esProgramacionValida(pi, 3) shouldBe false
   }
+
+  // 3. PRUEBA DE COSTO TOTAL
+  test("costoTotal debe calcular correctamente un caso simple") {
+
+    val pi = Vector(0, 1, 2)  // Programación simple y secuencial
+
+    // Calculamos el costo total usando nuestra función
+    val costo = Programaciones.costoTotal(f, pi, d)
+
+    // Verificamos que sea igual a:
+    // costo de riego total + costo de movilidad total
+    costo shouldBe (Costos.costoRiegoFinca(f, pi) + Costos.costoMovilidad(f, pi, d))
+  }
 }
