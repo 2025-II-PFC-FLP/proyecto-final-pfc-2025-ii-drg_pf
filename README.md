@@ -8,11 +8,13 @@
 
 ## 👥 Integrantes del Grupo
 
-| Nombre Completo            | Código    | Rol   | Correo Electrónico                  |
-|----------------------------|-----------| ----- |-------------------------------------|
-| Camilo Andrés López Trejos | 202459691 | Líder | camilo.trejos@correounivalle.edu.co |
-| [Estudiante 2]             | 123457    | [Colaborador] | [correo2@institucion.edu]           |
-| [Estudiante 3]             | 123458    | [Colaborador] | [correo3@institucion.edu]           |
+| Nombre Completo            | Código    | Rol           | Correo Electrónico                  |
+|----------------------------|-----------| --------------|-------------------------------------|
+| Camilo Andrés López Trejos | 202459691 | Líder         | camilo.trejos@correounivalle.edu.co |
+| David Santiago peña Cotamo | 202459611 | Colaborador   | pena.david@correounivalle.edu.co    |
+| Nicolás González Bolaños   | 202459700 | Colaborador   | nicolas.gonzalez.bolanos@correounivalle.edu.co|
+| Juan Manuel Perez Cruz     | 202266033 | Colaborador   | juan.perez.cruz@correounivalle.edu.co|
+| Sebastian García Cardona     | 202459672 | Colaborador   | sebastian.garcia.cardona@correounivalle.edu.co |
 
 ---
 
