@@ -37,4 +37,11 @@ object Costos {
 
 
 
+  def costoMovilidad(f: Finca, pi: ProRiego, d: Distancia): Int = {
+    val parejas = pi.sliding(2).map{case Vector(a,b) => (a,b)}.toVector
+    (0 until parejas.length).map(i => d(parejas(i)._1)(parejas(i)._2)).sum
+  }
+
+
+
 }
