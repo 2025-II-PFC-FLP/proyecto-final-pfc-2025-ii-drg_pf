@@ -1,90 +1,96 @@
 package Proyecto
 
-// Importa las librerías necesarias de ScalaTest
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatest.matchers.should.Matchers
 
-// Declaramos la clase del test, que extiende AnyFunSuite
-// y Matchers para usar "shouldBe", "shouldEqual", etc.
 class ProgramacionesTest extends AnyFunSuite with Matchers {
 
-  // Finca pequeña que usaremos para las pruebas de Programaciones
+  // Finca pequeña para pruebas
   val f: Finca = Vector(
     (6, 2, 3),  // Tablón 0: ts=6, tr=2, p=3
     (4, 1, 1),  // Tablón 1: ts=4, tr=1, p=1
     (7, 3, 4)   // Tablón 2: ts=7, tr=3, p=4
   )
 
-  // Matriz de distancias entre los tablones.
-  // Es simétrica y la diagonal es 0, como lo indica el pdf.
   val d: Distancia = Vector(
     Vector(0, 2, 4),
     Vector(2, 0, 3),
     Vector(4, 3, 0)
   )
 
-  // 1. PRUEBA DE GENERACIÓN DE PROGRAMACIONES
+
+  // ------------------------------------------------------------
+  // 1. PRUEBA DE GENERACIÓN SECUENCIAL
+  // ------------------------------------------------------------
   test("generarProgramacionesRiego debe generar todas las permutaciones") {
-
-    // Llamamos a la función que genera todas las permutaciones posibles.
     val programaciones = Programaciones.generarProgramacionesRiego(f)
-
-    // Para 3 tablones deben existir 3! = 6 permutaciones posibles.
     programaciones.length shouldBe 6
-
-    // Verificamos que no haya duplicados.
     programaciones.toSet.size shouldBe 6
   }
 
-  // 2. PRUEBA DE VALIDACIÓN DE PROGRAMACIONES
+  // ------------------------------------------------------------
+  // 2. PRUEBA DE VALIDACIÓN
+  // ------------------------------------------------------------
   test("esProgramacionValida debe aceptar permutaciones correctas") {
-
-    // Esta es una permutación válida de {0,1,2}
     val pi = Vector(2, 0, 1)
-
-    // La función debe devolver true
     Programaciones.esProgramacionValida(pi, 3) shouldBe true
   }
 
   test("esProgramacionValida debe rechazar permutaciones incorrectas") {
-
-    // Esta NO es válida porque el 2 se repite y falta el 0
     val pi = Vector(2, 2, 1)
-
-    // La función debe detectarlo y devolver false
     Programaciones.esProgramacionValida(pi, 3) shouldBe false
   }
 
-  // 3. PRUEBA DE COSTO TOTAL
+  // ------------------------------------------------------------
+  // 3. COSTO TOTAL (consistencia)
+  // ------------------------------------------------------------
   test("costoTotal debe calcular correctamente un caso simple") {
-
-    val pi = Vector(0, 1, 2)  // Programación simple y secuencial
-
-    // Calculamos el costo total usando nuestra función
+    val pi = Vector(0, 1, 2)
     val costo = Programaciones.costoTotal(f, pi, d)
-
-    // Verificamos que sea igual a:
-    // costo de riego total + costo de movilidad total
     costo shouldBe (Costos.costoRiegoFinca(f, pi) + Costos.costoMovilidad(f, pi, d))
   }
 
-  // 4. PRUEBA DE ÓPTIMO: mejorProgramacion
+  // ------------------------------------------------------------
+  // 4. MEJOR PROGRAMACIÓN (secuencial)
+  // ------------------------------------------------------------
   test("mejorProgramacion debe retornar la programación óptima") {
-
-    // Generamos todas las permutaciones posibles (todas las programaciones)
     val programaciones = Programaciones.generarProgramacionesRiego(f)
-
-    // La función debe retornar la mejor programación + su costo
     val (mejor, costo) = Programaciones.mejorProgramacion(f, d, programaciones)
-
-    // Calculamos todos los costos posibles de manera independiente
-    val todosLosCostos =
-      programaciones.map(pi => Programaciones.costoTotal(f, pi, d))
-
-    // El costo devuelto debe ser exactamente el mínimo de todos los costos
+    val todosLosCostos = programaciones.map(pi => Programaciones.costoTotal(f, pi, d))
     costo shouldBe todosLosCostos.min
-
-    // Y la programación devuelta debe estar realmente en la lista
     programaciones.contains(mejor) shouldBe true
+  }
+
+
+  // PRUEBAS PARALELAS
+
+  // 5.1 Todas las programaciones paralelas deben coincidir con la versión secuencial
+  test("generarProgramacionesRiegoPar debe generar exactamente las mismas programaciones que la versión secuencial") {
+    val sec = Programaciones.generarProgramacionesRiego(f).toSet
+    val par = Programaciones.generarProgramacionesRiegoPar(f).toSet
+    par shouldBe sec
+  }
+
+  // 5.2 mejorProgramacion también debe funcionar con programaciones paralelas
+  test("mejorProgramacion debe funcionar igual usando las programaciones paralelas") {
+    val programacionesPar = Programaciones.generarProgramacionesRiegoPar(f)
+    val (mejor, costo) = Programaciones.mejorProgramacion(f, d, programacionesPar)
+
+    val costosPar = programacionesPar.map(pi => Programaciones.costoTotal(f, pi, d))
+
+    costo shouldBe costosPar.min
+    programacionesPar.contains(mejor) shouldBe true
+  }
+
+  // 5.3 Las versiones paralela y secuencial de Optimizacion deben concordar
+  test("ProgramacionRiegoOptimoPar debe producir el mismo resultado que ProgramacionRiegoOptimo") {
+
+    val (piSec, costoSec) = Optimizacion.ProgramacionRiegoOptimo(f, d)
+    val (piPar, costoPar) = Optimizacion.ProgramacionRiegoOptimoPar(f, d)
+
+    costoPar shouldBe costoSec
+
+    Programaciones.costoTotal(f, piPar, d) shouldBe
+      Programaciones.costoTotal(f, piSec, d)
   }
 }
