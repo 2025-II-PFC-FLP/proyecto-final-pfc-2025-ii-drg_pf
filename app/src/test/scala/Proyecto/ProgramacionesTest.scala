@@ -67,4 +67,24 @@ class ProgramacionesTest extends AnyFunSuite with Matchers {
     // costo de riego total + costo de movilidad total
     costo shouldBe (Costos.costoRiegoFinca(f, pi) + Costos.costoMovilidad(f, pi, d))
   }
+
+  // 4. PRUEBA DE ÓPTIMO: mejorProgramacion
+  test("mejorProgramacion debe retornar la programación óptima") {
+
+    // Generamos todas las permutaciones posibles (todas las programaciones)
+    val programaciones = Programaciones.generarProgramacionesRiego(f)
+
+    // La función debe retornar la mejor programación + su costo
+    val (mejor, costo) = Programaciones.mejorProgramacion(f, d, programaciones)
+
+    // Calculamos todos los costos posibles de manera independiente
+    val todosLosCostos =
+      programaciones.map(pi => Programaciones.costoTotal(f, pi, d))
+
+    // El costo devuelto debe ser exactamente el mínimo de todos los costos
+    costo shouldBe todosLosCostos.min
+
+    // Y la programación devuelta debe estar realmente en la lista
+    programaciones.contains(mejor) shouldBe true
+  }
 }
