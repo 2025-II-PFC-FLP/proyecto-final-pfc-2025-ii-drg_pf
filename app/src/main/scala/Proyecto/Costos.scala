@@ -27,4 +27,14 @@ object Costos {
     }
   }
 
+
+
+  def costoRiegoFinca(f: Finca, pi: ProRiego): Int = {
+    //Recorre el vector Finca f de 0 a n-1 (n es el tamaño del vector o bien el numero de tablones)
+    // i va tomando los valores de 0 a n-1 lo cual representa la posicion del tablon en el vector
+    (0 until f.length).map(i => costoRiegoTablon(i,f,pi)).sum
+  }
+
+
+
 }
