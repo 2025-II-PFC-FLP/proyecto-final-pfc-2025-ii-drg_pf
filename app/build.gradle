@@ -50,6 +50,10 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'org.scalatest:scalatest_2.13:3.2.16'
     testImplementation 'org.scalatestplus:junit-4-13_2.13:3.2.2.0'
+    // JUnit Platform para ejecutar ScalaTest
+    testRuntimeOnly 'org.junit.platform:junit-platform-engine:1.10.0'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.10.0'
+    testRuntimeOnly 'co.helmethair:scalatest-junit-runner:0.2.0'
 
     // Need scala-xml at test runtime
     testRuntimeOnly 'org.scala-lang.modules:scala-xml_2.13:1.2.0'
@@ -65,4 +69,15 @@ java {
 application {
     // Define the main class for the application.
     mainClass = 'taller.App'
+}
+
+test {
+    useJUnitPlatform {
+        includeEngines 'scalatest'
+    }
+    testLogging {
+        events "passed", "skipped", "failed"
+        exceptionFormat "full"
+        showStandardStreams = true
+    }
 }
