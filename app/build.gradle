@@ -72,13 +72,9 @@ application {
 }
 
 test {
-    useJUnitPlatform()
-
-
     useJUnitPlatform {
         includeEngines 'scalatest'
     }
-
 
     filter {
         includeTestsMatching "*Test"
@@ -90,3 +86,4 @@ test {
         showStandardStreams = true
     }
 }
+
