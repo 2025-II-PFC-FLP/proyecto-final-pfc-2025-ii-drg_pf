@@ -180,4 +180,88 @@ object Benchmark {
 
     println("="*80 + "\n")
   }
+
+  // EJECUCIÓN COMPLETA DE BENCHMARKS
+  // Ejecuta todos los benchmarks y muestra todas las tablas
+  def ejecutarBenchmarkCompleto(): Unit = {
+    println("\n")
+    println("╔" + "="*78 + "╗")
+    println("║" + " "*20 + "REPORTE DE BENCHMARK COMPLETO" + " "*28 + "║")
+    println("╚" + "="*78 + "╝")
+
+    // Tamaños grandes para funciones de costo (no son factoriales)
+    val tamanosGrandes = Vector(100, 500, 1000, 2000, 5000)
+
+    // Tamaños pequeños para permutaciones (complejidad factorial)
+    val tamanosPequenos = Vector(5, 6, 7, 8, 9)
+
+    // Ejecutar todos los benchmarks
+    tablaCostoRiegoFinca(tamanosGrandes)
+    tablaCostoMovilidad(tamanosGrandes)
+    tablaGenerarProgramaciones(tamanosPequenos)
+    tablaProgramacionOptima(tamanosPequenos)
+
+    println("\n" + "="*80)
+    println("BENCHMARK COMPLETADO")
+    println("="*80 + "\n")
+  }
+
+  // Benchmark con tamaños personalizados
+  def ejecutarBenchmarkPersonalizado(
+                                      tamanosGrandes: Vector[Int],
+                                      tamanosPequenos: Vector[Int]
+                                    ): Unit = {
+    println("\n")
+    println("╔" + "="*78 + "╗")
+    println("║" + " "*18 + "REPORTE DE BENCHMARK PERSONALIZADO" + " "*26 + "║")
+    println("╚" + "="*78 + "╝")
+
+    tablaCostoRiegoFinca(tamanosGrandes)
+    tablaCostoMovilidad(tamanosGrandes)
+    tablaGenerarProgramaciones(tamanosPequenos)
+    tablaProgramacionOptima(tamanosPequenos)
+
+    println("\n" + "="*80)
+    println("BENCHMARK COMPLETADO")
+    println("="*80 + "\n")
+  }
+
+  // Analiza si vale la pena paralelizar
+  def analizarParalelizacion(
+                              nombreFuncion: String,
+                              tamano: Int,
+                              tiempoSeq: Double,
+                              tiempoPar: Double
+                            ): Unit = {
+    val speedup = calcularSpeedup(tiempoSeq, tiempoPar)
+    val aceleracion = calcularAceleracion(tiempoSeq, tiempoPar)
+
+    println(s"\nAnálisis: $nombreFuncion con tamaño $tamano")
+    println(s"  Tiempo secuencial: ${tiempoSeq} ms")
+    println(s"  Tiempo paralelo: ${tiempoPar} ms")
+    println(s"  Speedup: ${speedup}x")
+    println(s"  Aceleración: ${aceleracion}%")
+
+    if (speedup > 1.2) {
+      println(s"  ✅ La paralelización es BENEFICIOSA (speedup > 1.2x)")
+    } else if (speedup > 1.0) {
+      println(s"  ⚠️  La paralelización es MARGINAL (1.0x < speedup < 1.2x)")
+    } else {
+      println(s"  ❌ La paralelización NO es beneficiosa (speedup < 1.0x)")
+    }
+  }
+
+  // ===============================================
+  // MAIN - PUNTO DE ENTRADA
+  // ===============================================
+
+  def main(args: Array[String]): Unit = {
+    println("\n╔" + "="*78 + "╗")
+    println("║" + " "*15 + "PROYECTO - BENCHMARKS DE PARALELIZACIÓN" + " "*22 + "║")
+    println("╚" + "="*78 + "╝\n")
+
+    ejecutarBenchmarkCompleto()
+
+    println("\n✅ Benchmark completado exitosamente\n")
+  }
 }
