@@ -33,4 +33,79 @@ object Benchmark {
   def calcularSpeedup(tiempoSeq: Double, tiempoPar: Double): Double = {
     if (tiempoPar > 0) tiempoSeq / tiempoPar else 0.0
   }
+
+  // BENCHMARKS PARA CADA FUNCIÓN
+
+  // Compara costoRiegoFinca normal vs paralela
+  def benchmarkCostoRiegoFinca(tamano: Int): (Double, Double, Double) = {
+    val finca = Generadores.fincaAlAzar(tamano)
+    val pi = Generadores.generarProRiego(tamano)
+
+    val tiempoSeq = medirTiempo {
+      Costos.costoRiegoFinca(finca, pi)
+    }
+
+    val tiempoPar = medirTiempo {
+      Costos.costoRiegoFincaPar(finca, pi)
+    }
+
+    val aceleracion = calcularAceleracion(tiempoSeq, tiempoPar)
+
+    (tiempoSeq, tiempoPar, aceleracion)
+  }
+
+  // Compara costoMovilidad normal vs paralela
+  def benchmarkCostoMovilidad(tamano: Int): (Double, Double, Double) = {
+    val finca = Generadores.fincaAlAzar(tamano)
+    val pi = Generadores.generarProRiego(tamano)
+    val distancia = Generadores.distanciaAlAzar(tamano)
+
+    val tiempoSeq = medirTiempo {
+      Costos.costoMovilidad(finca, pi, distancia)
+    }
+
+    val tiempoPar = medirTiempo {
+      Costos.costoMovilidadPar(finca, pi, distancia)
+    }
+
+    val aceleracion = calcularAceleracion(tiempoSeq, tiempoPar)
+
+    (tiempoSeq, tiempoPar, aceleracion)
+  }
+
+  // Compara generación de programaciones (solo para fincas pequeñas)
+  def benchmarkGenerarProgramaciones(tamano: Int): (Double, Double, Double) = {
+    val finca = Generadores.fincaAlAzar(tamano)
+
+    val tiempoSeq = medirTiempo {
+      Programaciones.generarProgramacionesRiego(finca)
+    }
+
+    val tiempoPar = medirTiempo {
+      Programaciones.generarProgramacionesRiegoPar(finca)
+    }
+
+    val aceleracion = calcularAceleracion(tiempoSeq, tiempoPar)
+
+    (tiempoSeq, tiempoPar, aceleracion)
+  }
+
+  // Compara búsqueda de programación óptima (solo fincas muy pequeñas)
+  def benchmarkProgramacionOptima(tamano: Int): (Double, Double, Double) = {
+    val finca = Generadores.fincaAlAzar(tamano)
+    val distancia = Generadores.distanciaAlAzar(tamano)
+
+    val tiempoSeq = medirTiempo {
+      Optimizacion.ProgramacionRiegoOptimo(finca, distancia)
+    }
+
+    val tiempoPar = medirTiempo {
+      Optimizacion.ProgramacionRiegoOptimoPar(finca, distancia)
+    }
+
+    val aceleracion = calcularAceleracion(tiempoSeq, tiempoPar)
+
+    (tiempoSeq, tiempoPar, aceleracion)
+  }
+
 }
