@@ -251,9 +251,7 @@ object Benchmark {
     }
   }
 
-  // ===============================================
   // MAIN - PUNTO DE ENTRADA
-  // ===============================================
 
   def main(args: Array[String]): Unit = {
     println("\n╔" + "="*78 + "╗")
