@@ -8,7 +8,7 @@ import org.scalatest.matchers.must.Matchers
 
 
 class CostosTest extends AnyFunSuite with Matchers {
-  //------------- Costo tablon ---------------//
+  //------------- Costo riego tablon ---------------//
 
 
   test("El costo de riego del tablon finca(4) (index en la lista) es igual a (2 - 1 >= 5) => 2*((5+1)-2) = 8"){
@@ -47,6 +47,53 @@ class CostosTest extends AnyFunSuite with Matchers {
     val finca5: Finca = Vector((4,3,1), (6,4,1), (3,2,2), (5,2,1), (4,2,3))
     val pi: ProRiego = Vector(0,3,4,1,2)
     assert(costoRiegoTablon(3,finca5,pi) == 0)
+  }
+
+
+
+  //--------------------- Costo riego finca --------------------//
+
+
+
+  test("El costo de riego de la finca es igual a la suma del costo de riego de los tablones finca(1) y finca(0)"){
+    val finca: Finca = Vector((1,2,4), (4,2,4))
+    val pi: ProRiego = Vector(1,0)
+    val sum = costoRiegoTablon(1,finca,pi) + costoRiegoTablon(0,finca,pi)
+    assert(costoRiegoFinca(finca,pi) == sum)
+  }
+
+
+
+  test("El costo de riego de la finca es igual a la suma del costo de cada tablon de la finca"){
+    val finca: Finca = Vector((3,2,4), (3,2,1), (5,3,4))
+    val pi: ProRiego = Vector(2,0,1)
+    val sum = costoRiegoTablon(1,finca,pi) + costoRiegoTablon(0,finca,pi) + costoRiegoTablon(2,finca,pi)
+    assert(costoRiegoFinca(finca,pi) == sum)
+  }
+
+
+
+  test("El costo de riego de la finca cambia dependiendo de la programacion de riego"){
+    val finca: Finca = Vector((7,5,4), (3,4,4), (2,3,4), (6,1,2), (3,2,3))
+    val pi1: ProRiego = Vector(0,3,2,4,1)
+    val pi2: ProRiego = Vector(4,2,0,3,1)
+    assert(costoRiegoFinca(finca,pi1) != costoRiegoFinca(finca,pi2))
+  }
+
+
+
+  test("El costo de riego de la finca con la programacion pi3 es igual a 79"){
+    val finca: Finca = Vector((8,2,4), (8,3,3), (1,5,1), (3,1,1), (8,4,3), (3,2,2))
+    val pi3: ProRiego = Vector(3,4,2,0,1,5)
+    assert(costoRiegoFinca(finca,pi3) == 79)
+  }
+
+
+
+  test("El costo de riego de la finca anterior con la programacion pi4 es igual a 62"){
+    val finca: Finca = Vector((8,2,4), (8,3,3), (1,5,1), (3,1,1), (8,4,3), (3,2,2))
+    val pi3: ProRiego = Vector(5,0,2,1,3,4)
+    assert(costoRiegoFinca(finca,pi3) == 62)
   }
 
 
