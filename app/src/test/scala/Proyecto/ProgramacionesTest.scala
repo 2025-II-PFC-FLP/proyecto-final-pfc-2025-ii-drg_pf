@@ -18,19 +18,16 @@ class ProgramacionesTest extends AnyFunSuite with Matchers {
     Vector(4, 3, 0)
   )
 
+  // PRUEBAS SECUENCIALES
 
-  // ------------------------------------------------------------
   // 1. PRUEBA DE GENERACIÓN SECUENCIAL
-  // ------------------------------------------------------------
   test("generarProgramacionesRiego debe generar todas las permutaciones") {
     val programaciones = Programaciones.generarProgramacionesRiego(f)
     programaciones.length shouldBe 6
     programaciones.toSet.size shouldBe 6
   }
 
-  // ------------------------------------------------------------
   // 2. PRUEBA DE VALIDACIÓN
-  // ------------------------------------------------------------
   test("esProgramacionValida debe aceptar permutaciones correctas") {
     val pi = Vector(2, 0, 1)
     Programaciones.esProgramacionValida(pi, 3) shouldBe true
@@ -41,18 +38,14 @@ class ProgramacionesTest extends AnyFunSuite with Matchers {
     Programaciones.esProgramacionValida(pi, 3) shouldBe false
   }
 
-  // ------------------------------------------------------------
-  // 3. COSTO TOTAL (consistencia)
-  // ------------------------------------------------------------
+  // 3. COSTO TOTAL
   test("costoTotal debe calcular correctamente un caso simple") {
     val pi = Vector(0, 1, 2)
     val costo = Programaciones.costoTotal(f, pi, d)
     costo shouldBe (Costos.costoRiegoFinca(f, pi) + Costos.costoMovilidad(f, pi, d))
   }
 
-  // ------------------------------------------------------------
-  // 4. MEJOR PROGRAMACIÓN (secuencial)
-  // ------------------------------------------------------------
+  // 4. MEJOR PROGRAMACIÓN
   test("mejorProgramacion debe retornar la programación óptima") {
     val programaciones = Programaciones.generarProgramacionesRiego(f)
     val (mejor, costo) = Programaciones.mejorProgramacion(f, d, programaciones)
