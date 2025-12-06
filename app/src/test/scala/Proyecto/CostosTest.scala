@@ -98,6 +98,74 @@ class CostosTest extends AnyFunSuite with Matchers {
 
 
 
+  //-------------- Costo movilidad -------------//
+
+
+
+  test("El costo de movilidad en finca con la programacion de riego pi y con sus distancias es igual a 5"){
+    val finca: Finca = Vector((5,2,3), (5,3,3), (1,3,2))
+    val dis1: Distancia = Vector(
+      Vector(0, 3, 1),
+      Vector(4, 0, 3),
+      Vector(2, 4, 0))
+    val pi: ProRiego = Vector(1,0,2)
+    assert(costoMovilidad(finca,pi,dis1) == 5)
+  }
+
+
+
+  test("El costo de movilidad en finca con la programacion de riego pi y la matriz dis1 es igual a 18"){
+    val finca: Finca = Vector((3,1,4), (5,5,4), (2,4,2), (3,1,2), (3,3,4))
+    val dis1: Distancia = Vector(
+      Vector(0, 6, 2, 7, 7),
+      Vector(5, 0, 5, 7, 1),
+      Vector(2, 1, 0, 8, 1),
+      Vector(3, 4, 3, 0, 5),
+      Vector(2, 7, 3, 5, 0))
+    val pi: ProRiego = Vector(2,1,0,3,4)
+    assert(costoMovilidad(finca,pi,dis1) == 18)
+  }
+
+
+
+  test("El costo de movilidad en finca con la programacion de riego pi y la matriz dis1 es igual a 9"){
+    val finca: Finca = Vector((5,2,4), (3,1,1), (1,2,1), (6,1,4))
+    val dis1: Distancia = Vector(
+      Vector(0, 3, 3, 4),
+      Vector(1, 0, 4, 7),
+      Vector(6, 2, 0, 5),
+      Vector(4, 1, 1, 0))
+    val pi: ProRiego = Vector(3,0,2,1)
+    assert(costoMovilidad(finca,pi,dis1) == 9)
+  }
+
+
+
+  test("El costo de movilidad en finca con la programacion de riego pi y la matriz dis1 es igual a 2"){
+    val finca: Finca = Vector((3,2,4), (4,1,1))
+    val dis1: Distancia = Vector(
+      Vector(0, 5),
+      Vector(2, 0))
+    val pi: ProRiego = Vector(1,0)
+    assert(costoMovilidad(finca,pi,dis1) == 2)
+  }
+
+
+
+  test("El costo de movilidad en finca con la programacion de riego pi y la matriz de distancias dis1 es 24"){
+    val finca: Finca = Vector((7,4,4), (2,5,4), (4,4,1), (2,5,3), (4,5,4))
+    val dis1: Distancia = Vector(
+      Vector(0, 6, 7, 8, 2),
+      Vector(7, 0, 7, 1, 2),
+      Vector(3, 1, 0, 2, 2),
+      Vector(4, 1, 1, 0, 6),
+      Vector(8, 6, 3, 2, 0))
+    val pi: ProRiego = Vector(1,0,3,4,2)
+    assert(costoMovilidad(finca,pi,dis1) == 24)
+  }
+
+
+
 }
 
 
