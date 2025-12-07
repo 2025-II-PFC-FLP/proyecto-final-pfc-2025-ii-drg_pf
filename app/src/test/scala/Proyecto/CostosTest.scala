@@ -7,7 +7,7 @@ import org.scalatest.funsuite.AnyFunSuite
 import org.scalatest.matchers.must.Matchers
 
 
-class CostosTest extends AnyFunSuite with Matchers {
+class   CostosTest extends AnyFunSuite with Matchers {
   //------------- Costo riego tablon ---------------//
 
 
