@@ -282,4 +282,5 @@ flowchart TD
     H --> I["Corrección de la Programación Óptima"]
 
 
+
 **Fin del informe.**
