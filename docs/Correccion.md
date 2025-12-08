@@ -265,32 +265,21 @@ $$
 El proyecto es **correcto** desde el punto de vista matemático y computacional.
 
 ---
-graph TD
+flowchart TD
 
-    A["Especificación matemática"]
-    A --> B["tIR definido formalmente"]
-    B --> C["Prueba por inducción"]
-    C --> D["Corrección de tIR"]
+    A["Especificación Matemática"] --> B["Corrección de tIR"]
+    A --> C["Corrección de Generación de Permutaciones"]
+    A --> D["Corrección del Costo de Riego"]
+    A --> E["Corrección del Costo de Movilidad"]
 
-    A --> E["Permutaciones definidas formalmente"]
-    E --> F["Modelo inductivo"]
-    F --> G["Corrección de generador de programaciones"]
+    B --> F["Funciones individuales correctas"]
+    C --> F
+    D --> F
+    E --> F
 
-    A --> H["Fórmulas de costo"]
-    H --> I["Implementación directa"]
-    I --> J["Corrección de costos"]
+    F --> G["Evaluación de todas las programaciones"]
+    G --> H["Selección del mínimo"]
+    H --> I["Corrección de la Programación Óptima"]
 
-    A --> K["Costo de movilidad"]
-    K --> L["Verificación de pares consecutivos"]
-    L --> M["Corrección de movilidad"]
-
-    D --> N["Bases correctas"]
-    G --> N
-    J --> N
-    M --> N
-
-    N --> O["Cálculo de programación óptima"]
-    O --> P["Selección del mínimo"]
-    P --> Q["Corrección global del sistema"]
 
 **Fin del informe.**
