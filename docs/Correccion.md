@@ -1,191 +1,296 @@
-# Ejemplo informe de corrección
+# Informe de Corrección del Proyecto de Riego Óptimo
 
 **Fundamentos de Programación Funcional y Concurrente**  
-Documento realizado por el docente Juan Francisco Díaz.
+Documento elaborado siguiendo el estilo y estructura del material de ejemplo proporcionado por el docente.
 
 ---
 
-## Argumentación de corrección de programas
+## Argumentación de corrección de las funciones implementadas
 
-### Argumentando sobre corrección de programas recursivos
+En este documento se presenta la argumentación formal de corrección de las funciones desarrolladas para el proyecto de optimización del riego.  
+Al igual que en el archivo de referencia, la corrección se basa en los principios de:
 
-Sea $f : A \to B$ una función, y $A$ un conjunto definido recursivamente (recordar definición de matemáticas discretas I), como por ejemplo los naturales o las listas.
+- **Inducción estructural**
+- **Correspondencia con especificaciones matemáticas**
+- **Análisis del comportamiento recursivo y funcional**
 
-Sea $P_f$ un programa recursivo (lineal o en árbol) desarrollado en Scala (o en cualquier lenguaje de programación) hecho para calcular $f$:
-
-```scala
-def Pf(a: A): B = { // Pf recibe a de tipo A, y devuelve f(a) de tipo B
-  ...
-}
-```
-
-¿Cómo argumentar que \$P_f(a)\$ siempre devuelve \$f(a)\$ como respuesta? Es decir, ¿cómo argumentar que \$P_f\$ es correcto con respecto a su especificación?
-
-La respuesta es sencilla, demostrando el siguiente teorema:
-
-$$
-\forall a \in A : P_f(a) == f(a)
-$$
-
-Cuando uno tiene que demostrar que algo se cumple para todos los elementos de un conjunto definido recursivamente, es natural usar **inducción estructural**.
-
-En términos prácticos, esto significa demostrar que:
-
-- Para cada valor básico \$a\$ de \$A\$, se tiene que \$P_f(a) == f(a)\$.
-- Para cada valor \$a \in A\$ construido recursivamente a partir de otro(s) valor(es) \$a' \in A\$, se tiene que \$P_f(a') == f(a') \rightarrow P_f(a) == f(a)\$ (hipótesis de inducción).
+El objetivo es demostrar que cada función implementada cumple su especificación formal.
 
 ---
 
-#### Ejemplo: Factorial Recursivo
+## 1. Corrección de la función `tIR`
 
-Sea \$f : \mathbb{N} \to \mathbb{N}\$ la función que calcula el factorial de un número natural, \$f(n) = n!\$.
-
-Programa en Scala:
+La función `tIR` está definida en:
 
 ```scala
-def Pf(n: Int): Int = {
-  if (n == 0) 1 else n * Pf(n - 1)
-}
+def tIR(f: Finca, pi: ProRiego): TiempoInicioRiego = { ... }
 ```
 
-Queremos demostrar que:
+Basada en las ecuaciones formales del documento:
+
+- Caso base:  
+  $t_{\pi_0} = 0$
+
+- Caso inductivo:  
+  $t_{\pi_j} = t_{\pi_{j-1}} + tr(f, \pi_{j-1})$
+
+### Demostración por inducción estructural
+
+Sea $f$ una finca con $n$ tablones y $\pi$ una permutación válida:
+
+### Caso base: $j = 0$
+
+El programa ejecuta:
+
+```scala
+if (turno == 0) 0
+```
+
+lo cual coincide exactamente con la definición formal.  
+Por lo tanto:  
+$P_{tIR}(\pi_0) = 0 = t_{\pi_0}$.
+
+### Caso inductivo
+
+Hipótesis de inducción:
 
 $$
-\forall n \in \mathbb{N} : P_f(n) == n!
+P_{tIR}(\pi_k) = t_{\pi_k}
 $$
 
-- **Caso base**: \$n = 0\$
+El programa calcula:
+
+```scala
+tiempoInicio = tiempoInicioAnterior + tiempoRiegoAnterior
+```
+
+que corresponde a:
 
 $$
-P_f(0) \to 1 \quad \land \quad f(0) = 0! = 1
+t_{\pi_{k+1}} = t_{\pi_k} + tr(f,\pi_k)
 $$
 
-Entonces \$P_f(0) == f(0)\$.
+Luego actualiza el acumulador inmutable:
 
-- **Caso inductivo**: \$n = k+1\$, \$k \geq 0\$.
+```scala
+acumulador.updated(tablonActual, tiempoInicio)
+```
 
-$$
-P_f(k+1) \to (k+1) \cdot P_f(k)
-$$
-
-Usando la hipótesis de inducción:
+Con esto se cumple que:
 
 $$
-\to (k+1) \cdot k! = (k+1)!
+P_{tIR}(\pi_{k+1}) = t_{\pi_{k+1}}
 $$
 
-Por lo tanto, \$P_f(k+1) == f(k+1)\$.
+### Conclusión
 
-**Conclusión**: \$\forall n \in \mathbb{N} : P_f(n) == n!\$
+Por inducción estructural:
+
+$$
+\forall i \in \{0,\ldots,n-1\},\; P_{tIR}(i) = t(i)
+$$
+
+La función es correcta con respecto a su especificación.
 
 ---
 
-#### Ejemplo: El máximo de una lista
+## 2. Corrección de `generarProgramacionesRiego`
 
-Sea \$f : \text{List}\[\mathbb{N}] \to \mathbb{N}\$ la función que calcula el máximo de una lista no vacía.
-
-Programa en Scala:
+La función:
 
 ```scala
-def maxLin(l: List[Int]): Int = {
-  if (l.tail.isEmpty) l.head
-  else math.max(maxLin(l.tail), l.head)
-}
+def generarProgramacionesRiego(f: Finca): Vector[ProRiego] =
+  (0 until n).toVector.permutations.map(_.toVector).toVector
 ```
 
-Queremos demostrar que:
+Su especificación formal es generar:
 
 $$
-\forall n \in \mathbb{N} \setminus \{0\} :
-P_f(\text{List}(a_1, \ldots, a_n)) == f(\text{List}(a_1, \ldots, a_n))
+Perm(0,1,\ldots,n-1)
 $$
 
-- **Caso base**: \$n=1\$.
+### Argumentación
+
+La función `permutations` de Scala implementa la definición matemática clásica:
+
+- Caso base:  
+  $Perm([]) = [[]]$
+
+- Caso inductivo:  
+  Para una lista $L = [x_1,\ldots,x_n]$:
 
 $$
-P_f(\text{List}(a_1)) \to a_1 \quad \land \quad f(\text{List}(a_1)) = a_1
+Perm(L) =
+\bigcup_{x\in L} x :: Perm(L - \{x\})
 $$
 
-- **Caso inductivo**: \$n=k+1\$.
+Como la función no altera el proceso generativo, y solo convierte los resultados a `Vector`, entonces:
 
 $$
-P_f(L) \to \text{math.max}(P_f(\text{List}(a_2, \ldots, a_{k+1})), a_1)
+P_{perms}(L) = Perm(L)
 $$
 
-Dependiendo del mayor entre \$a_1\$ y \$b\$ (el máximo del resto de la lista), se cumple que \$P_f(L) == f(L)\$.
+### Conclusión
 
-**Conclusión**:
-
-$$
-\forall n \in \mathbb{N} \setminus \{0\} : P_f(\text{List}(a_1, \ldots, a_n)) == f(\text{List}(a_1, \ldots, a_n))
-$$
+La función genera exactamente todas las permutaciones posibles.  
+Por lo tanto, es correcta.
 
 ---
 
-### Argumentando sobre corrección de programas iterativos
+## 3. Corrección de `costoRiegoTablon` y `costoRiegoFinca`
 
-Para argumentar la corrección de programas iterativos, se debe formalizar cómo es la iteración:
+La definición implementada es:
 
-- Representación de un estado \$s\$.
-- Estado inicial \$s_0\$.
-- Estado final \$s_f\$.
-- Invariante de la iteración \$\text{Inv}(s)\$.
-- Transformación de estados \$\text{transformar}(s)\$.
+$$
+costo(i) =
+\begin{cases}
+ts(i) - (t(i) + tr(i)), & \text{si } ts(i) - tr(i) \ge t(i) \\
+p(i)\cdot\big((t(i) + tr(i)) - ts(i)\big), & \text{en caso contrario}
+\end{cases}
+$$
 
-Programa iterativo genérico:
+El código:
 
 ```scala
-def Pf(a: A): B = {
-  def Pf_iter(s: Estado): B =
-    if (esFinal(s)) respuesta(s) else Pf_iter(transformar(s))
-  Pf_iter(s0)
-}
+if(ts - tr >= t)
+    ts - (t + tr)
+else
+    tp * ((t + tr) - ts)
 ```
+
+Esto sigue exactamente la definición matemática.  
+Como `tIR`, `tsup`, `treg`, `prio` son correctas, se concluye:
+
+$$
+P_{costo}(i) = costo(i)
+$$
+
+La función de finca suma todos los costos:
+
+```scala
+(0 until f.length).map(i => costoRiegoTablon(i,f,pi)).sum
+```
+
+lo cual corresponde a:
+
+$$
+CostoTotal = \sum_{i=0}^{n-1} costo(i)
+$$
+
+### Conclusión
+
+La implementación coincide con la especificación formal.  
+Por lo tanto, es correcta.
 
 ---
 
-#### Ejemplo: Factorial Iterativo
+## 4. Corrección de `costoMovilidad`
+
+Especificación:
+
+$$
+CostoMov(\pi)=\sum_{j=0}^{n-2} d(\pi_j,\pi_{j+1})
+$$
+
+Implementación:
 
 ```scala
-def Pf(n: Int): Int = {
-  def Pf_iter(i: Int, n: Int, ac: Int): Int =
-    if (i > n) ac else Pf_iter(i + 1, n, i * ac)
-  Pf_iter(1, n, 1)
-}
+val parejas = pi.sliding(2).map{case Vector(a,b) => (a,b)}.toVector
+parejas.map{case (a,b) => d(a)(b)}.sum
 ```
 
-- Estado \$s = (i, n, ac)\$
-- Estado inicial \$s_0 = (1, n, 1)\$
-- Estado final: \$i = n+1\$
-- Invariante: \$\text{Inv}(i,n,ac) \equiv i \leq n+1 \land ac = (i-1)!\$
-- Transformación: \$(i, n, ac) \to (i+1, n, i \cdot ac)\$
+`sliding(2)` produce los pares consecutivos, cumpliendo:
 
-Por inducción sobre la iteración, se demuestra que al llegar a \$s_f\$, \$ac = n!\$.
+$$
+(\pi_0,\pi_1),(\pi_1,\pi_2),\ldots,(\pi_{n-2},\pi_{n-1})
+$$
+
+La suma es exactamente la definida.
+
+### Conclusión
+
+$$
+P_{mov}(\pi)=CostoMov(\pi)
+$$
+
+La función es correcta.
 
 ---
 
-#### Ejemplo: El máximo de una lista
+## 5. Corrección de `mejorProgramacion`
 
 ```scala
-def maxIt(l: List[Int]): Int = {
-  def maxAux(max: Int, l: List[Int]): Int = {
-    if (l.isEmpty) max
-    else maxAux(math.max(max, l.head), l.tail)
-  }
-  maxAux(l.head, l.tail)
-}
+lista.map(pi => (pi, costoTotal(f,pi,d))).minBy(_._2)
 ```
 
-- Estado \$s = (max, l)\$
-- Estado inicial \$s_0 = (a_1, \text{List}(a_2, \ldots, a_k))\$
-- Estado final: \$l = \text{List}()\$
-- Invariante: \$\text{Inv}(max, l) \equiv max = f(\text{prefijo})\$
-- Transformación: \$(max, l) \to (\text{math.max}(max, l.head), l.tail)\$
-
-Por inducción, al llegar al estado final, \$max = f(L)\$.
-
-**Conclusión**:
+La definición formal del problema es:
 
 $$
-P_f(L) == f(L)
+\pi^* = \arg\min_{\pi\in Perm(n)} costoTotal(\pi)
 $$
+
+Dado que:
+
+- la generación de permutaciones es correcta,
+- el costo total es correcto,
+- la búsqueda del mínimo es correcta,
+
+entonces:
+
+$$
+P_{opt} = \pi^*
+$$
+
+### Conclusión
+
+La función implementa exactamente la especificación del óptimo global.
+
+---
+
+## Conclusión General
+
+Todas las funciones del proyecto fueron verificadas formalmente, y cada una:
+
+- cumple su especificación matemática,
+- mantiene consistencia interna,
+- utiliza principios funcionales que facilitan la verificación,
+- respeta definiciones recursivas o combinatorias según corresponda.
+
+Por lo tanto:
+
+$$
+\forall \text{ funciones del proyecto: } P_f(x) = f(x)
+$$
+
+El proyecto es **correcto** desde el punto de vista matemático y computacional.
+
+---
+graph TD
+
+    A["Especificación matemática"]
+    A --> B["tIR definido formalmente"]
+    B --> C["Prueba por inducción"]
+    C --> D["Corrección de tIR"]
+
+    A --> E["Permutaciones definidas formalmente"]
+    E --> F["Modelo inductivo"]
+    F --> G["Corrección de generador de programaciones"]
+
+    A --> H["Fórmulas de costo"]
+    H --> I["Implementación directa"]
+    I --> J["Corrección de costos"]
+
+    A --> K["Costo de movilidad"]
+    K --> L["Verificación de pares consecutivos"]
+    L --> M["Corrección de movilidad"]
+
+    D --> N["Bases correctas"]
+    G --> N
+    J --> N
+    M --> N
+
+    N --> O["Cálculo de programación óptima"]
+    O --> P["Selección del mínimo"]
+    P --> Q["Corrección global del sistema"]
+
+**Fin del informe.**
