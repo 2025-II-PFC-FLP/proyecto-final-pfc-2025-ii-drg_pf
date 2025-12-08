@@ -265,6 +265,7 @@ $$
 El proyecto es **correcto** desde el punto de vista matemático y computacional.
 
 ---
+```mermaid
 flowchart TD
 
     A["Especificación Matemática"] --> B["Corrección de tIR"]
