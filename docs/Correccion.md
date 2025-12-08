@@ -265,6 +265,11 @@ $$
 El proyecto es **correcto** desde el punto de vista matemático y computacional.
 
 ---
+
+
+
+
+**Fin del informe.**
 ```mermaid
 flowchart TD
 
@@ -281,7 +286,3 @@ flowchart TD
     F --> G["Evaluación de todas las programaciones"]
     G --> H["Selección del mínimo"]
     H --> I["Corrección de la Programación Óptima"]
-
-
-
-**Fin del informe.**
