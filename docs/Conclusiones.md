@@ -1,7 +1,6 @@
 # Informe de Conclusiones del Proyecto de Riego Óptimo
 
 **Fundamentos de Programación Funcional y Concurrente**  
-Documento redactado siguiendo el mismo estilo académico del archivo *Correccion.md*.
 
 ---
 
